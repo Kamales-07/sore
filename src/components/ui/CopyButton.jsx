@@ -1,16 +1,15 @@
 import useCopyToClipboard from '../../hooks/useCopyToClipboard'
 import Button from './Button'
 
-/** Button that copies `text` and shows a short confirmation. */
+/** Copies `text` and confirms briefly. Calls onEmpty instead when there is nothing to copy. */
 export default function CopyButton({
   text,
-  label = 'Copy 📋',
-  copiedLabel = 'Copied! ✅',
-  failedLabel = 'Copy aagala 😅 select panni copy pannu',
+  label = 'Copy',
+  copiedLabel = 'Copied',
+  failedLabel = 'Copy failed. Select the text and copy it manually.',
   variant = 'secondary',
   size = 'md',
   onEmpty,
-  className = '',
 }) {
   const [copy, status] = useCopyToClipboard()
 
@@ -23,18 +22,12 @@ export default function CopyButton({
   }
 
   let content = label
-  if (status === 'copied') content = copiedLabel
+  if (status === 'copied') content = `${copiedLabel} ✓`
   if (status === 'failed') content = failedLabel
 
   return (
-    <Button
-      variant={status === 'copied' ? 'mint' : variant}
-      size={size}
-      onClick={handleClick}
-      aria-live="polite"
-      className={`copy-btn ${className}`}
-    >
-      {content}
+    <Button variant={variant} size={size} onClick={handleClick} className={`copy-btn ${status === 'copied' ? 'is-copied' : ''}`}>
+      <span aria-live="polite">{content}</span>
     </Button>
   )
 }

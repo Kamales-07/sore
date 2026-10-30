@@ -1,30 +1,25 @@
-import { footer } from '../../content/text'
+import { site } from '../../content/content'
 import useReducedMotion from '../../hooks/useReducedMotion'
 import Button from '../ui/Button'
+import Icon from '../ui/Icon'
+import Waves from '../ui/Waves'
+import EasterEgg from './EasterEgg'
 
 export default function Footer() {
   const reduced = useReducedMotion()
-  const toTop = () => window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
-
   return (
     <footer className="footer">
-      <div className="container">
-        <p className="footer__line1">{footer.line1}</p>
-        <p className="footer__line2">{footer.line2}</p>
-        <dl className="footer__stats">
-          {footer.stats.map((stat) => (
-            <div className="footer__stat" key={stat.label}>
-              <dd>
-                <strong>{stat.value}</strong>
-              </dd>
-              <dt>
-                <span>{stat.label}</span>
-              </dt>
-            </div>
-          ))}
-        </dl>
-        <Button variant="ghost" size="sm" onClick={toTop}>
-          {footer.backToTop}
+      <Waves className="footer__waves" />
+      <div className="container footer__inner">
+        <p className="footer__mark">
+          <span>{site.wordmark}</span>
+          <EasterEgg />
+        </p>
+        <p className="footer__credit">{site.credit}</p>
+        <p className="footer__privacy">{site.privacy}</p>
+        <Button variant="ghost" size="sm" onClick={() => window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })}>
+          <Icon name="up" />
+          {site.backToTop}
         </Button>
       </div>
     </footer>

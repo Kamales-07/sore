@@ -1,17 +1,15 @@
 import { useEffect, useRef } from 'react'
-import Button from './Button'
 
 /**
- * Accessible modal dialog: Escape closes, focus moves inside on open and
- * returns to the opener on close, body scroll is locked while open.
+ * Accessible dialog: Escape closes, Tab stays inside, focus returns to the opener,
+ * page scroll is locked while open.
  */
-export default function Modal({ open, onClose, title, children, closeLabel = 'Close', tone = 'paper' }) {
+export default function Modal({ open, onClose, labelledBy, children, className = '' }) {
   const panelRef = useRef(null)
-  const openerRef = useRef(null)
 
   useEffect(() => {
     if (!open) return undefined
-    openerRef.current = document.activeElement
+    const opener = document.activeElement
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
@@ -23,7 +21,7 @@ export default function Modal({ open, onClose, title, children, closeLabel = 'Cl
       }
       if (event.key !== 'Tab' || !panelRef.current) return
       const focusables = panelRef.current.querySelectorAll(
-        'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])',
+        'button:not([disabled]), [href], input, textarea, [tabindex]:not([tabindex="-1"])',
       )
       if (!focusables.length) return
       const first = focusables[0]
@@ -37,18 +35,13 @@ export default function Modal({ open, onClose, title, children, closeLabel = 'Cl
       }
     }
     document.addEventListener('keydown', onKey)
-
-    const focusTimer = setTimeout(() => {
-      panelRef.current?.querySelector('[data-autofocus]')?.focus()
-    }, 30)
+    const timer = setTimeout(() => panelRef.current?.querySelector('[data-autofocus]')?.focus(), 30)
 
     return () => {
-      clearTimeout(focusTimer)
+      clearTimeout(timer)
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = previousOverflow
-      if (openerRef.current && typeof openerRef.current.focus === 'function') {
-        openerRef.current.focus()
-      }
+      if (opener && typeof opener.focus === 'function') opener.focus()
     }
   }, [open, onClose])
 
@@ -56,22 +49,8 @@ export default function Modal({ open, onClose, title, children, closeLabel = 'Cl
 
   return (
     <div className="modal" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
-      <div
-        ref={panelRef}
-        className={`modal__panel modal__panel--${tone}`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-      >
-        <div className="modal__head">
-          <h3 id="modal-title" className="modal__title">
-            {title}
-          </h3>
-          <Button variant="ghost" size="sm" onClick={onClose} aria-label={closeLabel} data-autofocus>
-            ✕
-          </Button>
-        </div>
-        <div className="modal__body">{children}</div>
+      <div ref={panelRef} className={`modal__panel ${className}`} role="dialog" aria-modal="true" aria-labelledby={labelledBy}>
+        {children}
       </div>
     </div>
   )

@@ -1,88 +1,59 @@
 import { useState } from 'react'
-import { finalInteraction } from '../../content/text'
-import Section from '../ui/Section'
+import { finalInteraction } from '../../content/content'
+import Chapter from '../ui/Chapter'
 import Button from '../ui/Button'
-import SpeechBubble from '../ui/SpeechBubble'
-import Confetti from '../ui/Confetti'
 import CopyButton from '../ui/CopyButton'
 
 export default function FinalInteraction() {
-  const [choice, setChoice] = useState(null) // 'laugh' | 'time' | 'advice' | null
-  const [burst, setBurst] = useState(0)
-  const [advice, setAdvice] = useState('')
+  const [choice, setChoice] = useState(null)
+  const [text, setText] = useState('')
   const [hint, setHint] = useState('')
-  const { buttons } = finalInteraction
-
-  const pick = (key) => {
-    setChoice(key)
-    if (key === 'laugh') setBurst((b) => b + 1)
-  }
+  const { options, form } = finalInteraction
 
   return (
-    <Section
-      id="interaction"
-      tone="lavender"
-      eyebrow="Section 11 · Judge Madam-oda choice"
-      title={finalInteraction.heading}
-      subtitle={finalInteraction.intro}
-    >
-      <Confetti burst={burst} />
+    <Chapter id="reply" num="08" label="That's Everything" title={finalInteraction.heading} subtitle={finalInteraction.note} tone="deepest">
+      <div className="reply">
+        <div className="reply__options" role="group" aria-label="Optional responses">
+          {Object.entries(options).map(([key, option]) => (
+            <Button key={key} variant="secondary" aria-pressed={choice === key} className={choice === key ? 'is-selected' : ''} onClick={() => setChoice(key)}>
+              {option.label}
+            </Button>
+          ))}
+        </div>
 
-      <div className="final-actions" role="group" aria-label="Optional responses">
-        <Button variant="yellow" size="lg" onClick={() => pick('laugh')} aria-pressed={choice === 'laugh'}>
-          {buttons.laugh.label}
-        </Button>
-        <Button variant="secondary" size="lg" onClick={() => pick('time')} aria-pressed={choice === 'time'}>
-          {buttons.time.label}
-        </Button>
-        <Button variant="primary" size="lg" onClick={() => pick('advice')} aria-pressed={choice === 'advice'}>
-          {buttons.advice.label}
-        </Button>
-      </div>
-
-      <div className="final-response" aria-live="polite">
-        {choice === 'laugh' && (
-          <SpeechBubble tone="yellow" side="left">
-            {buttons.laugh.response}
-          </SpeechBubble>
-        )}
-        {choice === 'time' && (
-          <SpeechBubble tone="mint" side="left">
-            {buttons.time.response}
-          </SpeechBubble>
-        )}
-        {choice === 'advice' && (
-          <form className="advice card" onSubmit={(event) => event.preventDefault()}>
-            <label className="advice__label" htmlFor="advice-text">
-              {buttons.advice.formTitle}
-            </label>
-            <textarea
-              id="advice-text"
-              className="advice__textarea"
-              placeholder={buttons.advice.placeholder}
-              value={advice}
-              onChange={(event) => {
-                setAdvice(event.target.value)
-                if (hint) setHint('')
-              }}
-            />
-            <div className="advice__actions">
-              <CopyButton
-                text={advice}
-                label={buttons.advice.copyLabel}
-                copiedLabel={buttons.advice.copiedLabel}
-                variant="primary"
-                onEmpty={() => setHint(buttons.advice.emptyCopy)}
+        <div className="reply__response" aria-live="polite">
+          {choice && choice !== 'say' && (
+            <p className="reply__text" key={choice}>
+              {options[choice].response}
+            </p>
+          )}
+          {choice === 'say' && (
+            <form className="reply__form panel" onSubmit={(event) => event.preventDefault()}>
+              <label htmlFor="reply-text" className="mono">
+                {form.label}
+              </label>
+              <textarea
+                id="reply-text"
+                rows={5}
+                placeholder={form.placeholder}
+                value={text}
+                onChange={(event) => {
+                  setText(event.target.value)
+                  if (hint) setHint('')
+                }}
               />
-              <Button variant="ghost" size="sm" onClick={() => setAdvice('')} disabled={!advice}>
-                {buttons.advice.clearLabel}
-              </Button>
-            </div>
-            {hint && <p className="advice__hint">{hint}</p>}
-            <p className="advice__note">{buttons.advice.note}</p>
-          </form>
-        )}
+              <div className="reply__actions">
+                <CopyButton text={text} label={form.copy} copiedLabel={form.copied} variant="primary" onEmpty={() => setHint(form.empty)} />
+                <Button variant="ghost" onClick={() => setText('')} disabled={!text}>
+                  {form.clear}
+                </Button>
+              </div>
+              {hint && <p className="reply__hint">{hint}</p>}
+              <p className="footnote">{form.note}</p>
+            </form>
+          )}
+        </div>
       </div>
-    </Section>
+    </Chapter>
   )
 }
