@@ -1,11 +1,20 @@
 /*
- * Tiny Web Audio engine. Everything is synthesised, so there are no audio files.
- * Nothing plays until the visitor switches sound on (a user gesture).
+ * Tiny Web Audio engine.
+ *  - Background music: plays the song file from content.music if it exists,
+ *    otherwise falls back to a soft synthesised pad.
+ *  - Sound effects (thud, boing, chime) are synthesised, so they need no files.
+ * Nothing plays until a user gesture turns sound on.
  */
+import { music as musicConfig } from '../content/content'
 
 let ctx = null
 let master = null
 let ambient = null
+let music = null
+let musicFailed = false
+let musicPauseTimer = 0
+
+const MUSIC_SRC = `${import.meta.env.BASE_URL}${musicConfig.file}`
 
 function ensureContext() {
   if (typeof window === 'undefined') return null
@@ -25,15 +34,70 @@ export function isSupported() {
   return typeof window !== 'undefined' && !!(window.AudioContext || window.webkitAudioContext)
 }
 
-export function setEnabled(enabled) {
+/**
+ * Turn all sound on or off. Must be called from a click/tap so browsers allow playback.
+ * Resolves to what is playing: 'music' (the song), 'ambient' (fallback tone) or 'off'.
+ */
+export async function setEnabled(enabled) {
   const audio = ensureContext()
-  if (!audio) return
+  if (!audio) return 'off'
   const now = audio.currentTime
   master.gain.cancelScheduledValues(now)
   master.gain.setValueAtTime(master.gain.value, now)
   master.gain.linearRampToValueAtTime(enabled ? 1 : 0, now + (enabled ? 0.4 : 0.6))
-  if (enabled) startAmbient()
-  else stopAmbient()
+  if (!enabled) {
+    stopMusic()
+    stopAmbient()
+    return 'off'
+  }
+  const playing = await startMusic()
+  if (playing) {
+    stopAmbient()
+    return 'music'
+  }
+  startAmbient()
+  return 'ambient'
+}
+
+/* ---------- Background song ---------- */
+function fadeMusic(to, seconds) {
+  if (!music || !ctx) return
+  const now = ctx.currentTime
+  music.gain.gain.cancelScheduledValues(now)
+  music.gain.gain.setValueAtTime(music.gain.gain.value, now)
+  music.gain.gain.linearRampToValueAtTime(to, now + seconds)
+}
+
+async function startMusic() {
+  if (musicFailed || !ctx) return false
+  clearTimeout(musicPauseTimer)
+  if (!music) {
+    const el = new Audio()
+    el.src = MUSIC_SRC
+    el.loop = true
+    el.preload = 'auto'
+    const gain = ctx.createGain()
+    gain.gain.value = 0
+    ctx.createMediaElementSource(el).connect(gain).connect(master)
+    music = { el, gain }
+  }
+  try {
+    // play() is started synchronously inside the user's tap, which browsers require.
+    await music.el.play()
+  } catch {
+    // File missing or unsupported: remember that and use the built-in tone instead.
+    musicFailed = true
+    return false
+  }
+  fadeMusic(musicConfig.volume, 1.6)
+  return true
+}
+
+function stopMusic() {
+  if (!music) return
+  fadeMusic(0, 0.6)
+  clearTimeout(musicPauseTimer)
+  musicPauseTimer = setTimeout(() => music?.el.pause(), 650)
 }
 
 /* A quiet, slowly breathing pad: A2 / E3 / A3 / C#4 through a soft low-pass filter. */

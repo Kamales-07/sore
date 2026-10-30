@@ -5,7 +5,7 @@ import useReducedMotion from '../../hooks/useReducedMotion'
 import Button from '../ui/Button'
 import SoundToggle from '../ui/SoundToggle'
 import AngerMeter from '../game/AngerMeter'
-import Kamal from '../game/Kamal'
+import Kamales from '../game/Kamales'
 import Stamp from '../game/Stamp'
 
 const STAGES = game.stages
@@ -14,7 +14,7 @@ const SHRINK_STEPS = 3
 
 const formatWait = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 
-/** Everything Kamal offered up to (and including) the attempt she accepted on. */
+/** Everything Kamales offered up to (and including) the attempt she accepted on. */
 function collectPromises(stage, waited) {
   const byId = new Map()
   STAGES.slice(0, stage + 1).forEach((s) => {
@@ -186,8 +186,8 @@ export default function SorryGame({ onAccept }) {
           {s.sub && <p className="speech__sub">{s.sub}</p>}
         </div>
 
-        <div className="game__kamal">
-          <Kamal mood={mood} pose={s.pose} item={s.item} glitch={s.glitch && !busy} signText={formatWait(waited)} />
+        <div className="game__kamales">
+          <Kamales mood={mood} pose={s.pose} item={s.item} glitch={s.glitch && !busy} signText={formatWait(waited)} />
           {stamp && <Stamp key={stamp.key} text={stamp.text} />}
         </div>
       </div>

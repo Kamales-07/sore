@@ -6,7 +6,7 @@ import CopyButton from '../ui/CopyButton'
 import Icon from '../ui/Icon'
 import SoundToggle from '../ui/SoundToggle'
 import Waves from '../ui/Waves'
-import Kamal from '../game/Kamal'
+import Kamales from '../game/Kamales'
 import Stamp from '../game/Stamp'
 
 const formatTime = (ms) => {
@@ -59,7 +59,7 @@ export default function ResultScene({ result, onReplay }) {
 
       <div className="result__hero">
         <Stamp text={copy.stamp} tone="accept" inline />
-        <Kamal mood="happy" className="result__kamal" />
+        <Kamales mood="happy" className="result__kamales" />
         <h1 ref={titleRef} tabIndex={-1} className="result__title">
           {variant.title}
         </h1>

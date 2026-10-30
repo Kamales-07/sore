@@ -3,12 +3,24 @@
  * Rules: never "di", never "bestie", no romance. Friendship only.
  */
 
+/*
+ * Background music. Put your own copy of the song at:  public/music/kadhaippoma.mp3
+ * It starts when Gayu taps the start button (and can be muted any time).
+ * If the file is missing, a soft built-in tone plays instead.
+ */
+export const music = {
+  title: 'Kadhaippoma',
+  file: 'music/kadhaippoma.mp3',
+  volume: 0.55,
+  startOnEnter: true,
+}
+
 export const intro = {
   brand: 'Sorry, Gayu.',
   bubble: 'Gayu… oru nimisham? 🥺',
   sub: 'Sorry solla vandhen.',
   start: 'Hmm. Sollu 😒',
-  credit: 'Made by Kamal. For a very angry Gayu.',
+  credit: 'Made by Kamales. For a very angry Gayu.',
 }
 
 /* Anger meter labels, from furious to calm (checked top to bottom). */
@@ -96,7 +108,7 @@ export const game = {
       promise: { id: 'consult', text: 'Ask Gayu before buying any gift (even keychains)' },
     },
     {
-      line: 'Kamal.exe has stopped responding',
+      line: 'Kamales.exe has stopped responding',
       mood: 'dizzy',
       glitch: true,
       no: 'Restart. Still no.',
@@ -130,18 +142,18 @@ export const game = {
 
 export const result = {
   stamp: 'ACCEPTED 💙',
-  early: { title: 'Wait… that easy? 😳', sub: 'Kamal had 12 more speeches ready.' },
-  normal: { title: 'FORGIVEN!! 🥹', sub: (n) => `After ${n} rejections. Kamal is crying happy tears.` },
+  early: { title: 'Wait… that easy? 😳', sub: 'Kamales had 12 more speeches ready.' },
+  normal: { title: 'FORGIVEN!! 🥹', sub: (n) => `After ${n} rejections. Kamales is crying happy tears.` },
   broken: { title: 'Accepted… technically 😌', sub: 'The No button gave up before you did.' },
   stats: { rejected: 'Rejected', attempts: 'Sorry attempts', time: 'Time taken', anger: 'Anger now' },
-  receiptTitle: "KAMAL'S SORRY RECEIPT",
+  receiptTitle: "KAMALES'S SORRY RECEIPT",
   receiptAlways: '1 genuine sorry',
   receiptWait: (s) => `Waited ${s}s patiently (felt like ${s} years)`,
   receiptStatus: 'STATUS: FORGIVEN',
   receiptFoot: 'Non-refundable. Valid forever.',
   copy: 'Copy receipt 🧾',
-  copied: 'Copied! Send it to Kamal as proof',
+  copied: 'Copied! Send it to Kamales as proof',
   replay: 'Play again',
   note: ['Jokes apart, thank you, Gayu.', "I know I hurt you. I'll actually do better."],
-  signature: '— Kamal',
+  signature: '— Kamales',
 }

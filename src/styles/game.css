@@ -76,74 +76,74 @@
     -2px 0 rgba(255, 107, 74, 0.6);
 }
 
-/* ================= Kamal (character) ================= */
-.kamal {
+/* ================= Kamales (character) ================= */
+.kamales {
   width: 100%;
   height: auto;
   overflow: visible;
 }
 
-.kamal__body {
+.kamales__body {
   transform-box: fill-box;
   transform-origin: center bottom;
   animation: breathe 3.2s ease-in-out infinite;
 }
 
-.kamal__eyes {
+.kamales__eyes {
   transform-box: fill-box;
   transform-origin: center;
   animation: eyeBlink 4.2s infinite;
 }
 
-.kamal--nervous .kamal__body {
+.kamales--nervous .kamales__body {
   animation: shake 0.25s linear infinite;
 }
 
-.kamal--shocked .kamal__body {
+.kamales--shocked .kamales__body {
   animation: startle 0.45s var(--pop) both;
 }
 
-.kamal--happy {
+.kamales--happy {
   animation: hop 0.7s ease-in-out infinite;
 }
 
-.kamal.is-glitch {
+.kamales.is-glitch {
   animation: glitch 0.5s steps(2) infinite;
 }
 
-.kamal__tear {
+.kamales__tear {
   animation: drip 1.6s ease-in infinite;
 }
 
-.kamal__sweat {
+.kamales__sweat {
   animation: drip 1.2s ease-in infinite;
 }
 
-.kamal__stars {
+.kamales__stars {
   transform-box: fill-box;
   transform-origin: center;
   animation: spin 3s linear infinite;
 }
 
-.kamal__flag {
+.kamales__flag {
   transform-box: fill-box;
   transform-origin: left center;
   animation: wave 1.2s ease-in-out infinite;
 }
 
-.kamal__steam path {
+.kamales__steam path {
   animation: rise 1.8s ease-in-out infinite;
 }
 
-.kamal__steam path:nth-child(2) {
+.kamales__steam path:nth-child(2) {
   animation-delay: 0.5s;
 }
 
-.kamal__steam path:nth-child(3) {
+.kamales__steam path:nth-child(3) {
   animation-delay: 1s;
 }
 
-.kamal__sign-title {
+.kamales__sign-title {
   fill: var(--ink);
   font-family: var(--display);
   font-size: 10px;
@@ -151,7 +151,7 @@
   letter-spacing: 1px;
 }
 
-.kamal__sign-time {
+.kamales__sign-time {
   fill: var(--royal);
   font-family: var(--mono);
   font-size: 15px;
@@ -219,7 +219,7 @@
   animation-delay: 0.7s;
 }
 
-.intro__kamal {
+.intro__kamales {
   width: clamp(190px, 50vw, 260px);
   animation: peekUp 0.9s var(--pop) 0.15s both;
 }
@@ -342,7 +342,7 @@
   padding-block: 14px 8px;
 }
 
-.game__kamal {
+.game__kamales {
   position: relative;
   width: clamp(180px, 48vw, 250px);
 }
@@ -410,7 +410,7 @@
   text-align: center;
 }
 
-.result__kamal {
+.result__kamales {
   width: clamp(180px, 46vw, 230px);
 }
 

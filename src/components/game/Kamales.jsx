@@ -1,5 +1,5 @@
 /*
- * Kamal, drawn as one inline SVG (viewBox 240 x 300).
+ * Kamales, drawn as one inline SVG (viewBox 240 x 300).
  * mood: sheepish | puppy | hopeful | nervous | dizzy | sad | shocked | happy
  * pose: stand | kneel | sit
  * item: none | flag | chocolate | chocolates | biryani | sign
@@ -36,7 +36,7 @@ function Eyes({ mood }) {
   }
   if (mood === 'puppy') {
     return (
-      <g className="kamal__eyes">
+      <g className="kamales__eyes">
         {[EYE_L, EYE_R].map((x) => (
           <g key={x}>
             <circle cx={x} cy={EYE_Y + 1} r="12.5" fill="#fff" stroke={INK} strokeWidth="1.5" />
@@ -62,7 +62,7 @@ function Eyes({ mood }) {
   }
   const dy = mood === 'sad' ? 3 : 0
   return (
-    <g className="kamal__eyes">
+    <g className="kamales__eyes">
       {[EYE_L, EYE_R].map((x) => (
         <g key={x}>
           <circle cx={x} cy={EYE_Y + dy} r="5" fill={INK} />
@@ -127,11 +127,11 @@ function Extras({ mood }) {
         </g>
       )}
       {(mood === 'puppy' || mood === 'sad') && (
-        <path className="kamal__tear" d="M151 107 q6 9 0 13 q-6 -4 0 -13z" fill="#93C5FD" />
+        <path className="kamales__tear" d="M151 107 q6 9 0 13 q-6 -4 0 -13z" fill="#93C5FD" />
       )}
-      {mood === 'nervous' && <path className="kamal__sweat" d="M168 62 q7 11 0 16 q-7 -5 0 -16z" fill="#93C5FD" />}
+      {mood === 'nervous' && <path className="kamales__sweat" d="M168 62 q7 11 0 16 q-7 -5 0 -16z" fill="#93C5FD" />}
       {mood === 'dizzy' && (
-        <g className="kamal__stars" fill="#FDE68A">
+        <g className="kamales__stars" fill="#FDE68A">
           <path d="M66 46l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" />
           <path d="M172 38l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" />
           <path d="M120 22l2.5 5.5 5.5 2.5-5.5 2.5-2.5 5.5-2.5-5.5-5.5-2.5 5.5-2.5z" />
@@ -196,7 +196,7 @@ function Arms({ item, mood }) {
         <path d="M82 162 Q70 198 86 222" {...arm} />
         <circle cx="87" cy="225" r="10" fill={SKIN} />
         <path d="M188 120 V34" stroke="#CBD5E1" strokeWidth="3.5" strokeLinecap="round" />
-        <path className="kamal__flag" d="M188 36 Q206 30 224 40 Q208 48 224 60 Q206 52 188 58 Z" fill="#F8FAFC" />
+        <path className="kamales__flag" d="M188 36 Q206 30 224 40 Q208 48 224 60 Q206 52 188 58 Z" fill="#F8FAFC" />
         <path d="M158 162 Q182 144 188 108" {...arm} />
         <circle cx="188" cy="106" r="10" fill={SKIN} />
       </g>
@@ -238,7 +238,7 @@ function Item({ item }) {
     case 'biryani':
       return (
         <g>
-          <g className="kamal__steam" stroke="#DBEAFE" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".7">
+          <g className="kamales__steam" stroke="#DBEAFE" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".7">
             <path d="M108 166 q-6 -8 0 -16 q6 -8 0 -16" />
             <path d="M122 164 q-6 -8 0 -16 q6 -8 0 -16" />
             <path d="M136 166 q-6 -8 0 -16 q6 -8 0 -16" />
@@ -293,19 +293,19 @@ function Sign({ text }) {
     <g>
       <path d="M206 196 V290" stroke="#94A3B8" strokeWidth="4" strokeLinecap="round" />
       <rect x="170" y="150" width="68" height="54" rx="6" fill="#F8FAFC" stroke="#93C5FD" strokeWidth="2" />
-      <text x="204" y="172" textAnchor="middle" className="kamal__sign-title">
+      <text x="204" y="172" textAnchor="middle" className="kamales__sign-title">
         WAITING…
       </text>
-      <text x="204" y="194" textAnchor="middle" className="kamal__sign-time">
+      <text x="204" y="194" textAnchor="middle" className="kamales__sign-time">
         {text}
       </text>
     </g>
   )
 }
 
-export default function Kamal({ mood = 'sheepish', pose = 'stand', item = 'none', signText = '', glitch = false, className = '' }) {
+export default function Kamales({ mood = 'sheepish', pose = 'stand', item = 'none', signText = '', glitch = false, className = '' }) {
   const lift = pose === 'kneel' ? 26 : pose === 'sit' ? 46 : 0
-  const classes = ['kamal', `kamal--${mood}`, `kamal--${pose}`, glitch ? 'is-glitch' : '', className].filter(Boolean).join(' ')
+  const classes = ['kamales', `kamales--${mood}`, `kamales--${pose}`, glitch ? 'is-glitch' : '', className].filter(Boolean).join(' ')
 
   return (
     <svg className={classes} viewBox="0 0 240 300" aria-hidden="true" focusable="false">
@@ -313,7 +313,7 @@ export default function Kamal({ mood = 'sheepish', pose = 'stand', item = 'none'
       {item === 'sign' && <Sign text={signText} />}
       {pose !== 'sit' && <Legs pose={pose} />}
       <g transform={`translate(0 ${lift})`}>
-        <g className="kamal__body">
+        <g className="kamales__body">
           <Torso />
           <Head mood={mood} />
           <Arms item={item} mood={mood} />
