@@ -30,7 +30,18 @@ export function SoundProvider({ children }) {
     if (enabled) engine.chime()
   }, [enabled])
 
-  const value = useMemo(() => ({ enabled, supported, toggle, tick, chime }), [enabled, supported, toggle, tick, chime])
+  const thud = useCallback(() => {
+    if (enabled) engine.thud()
+  }, [enabled])
+
+  const boing = useCallback(() => {
+    if (enabled) engine.boing()
+  }, [enabled])
+
+  const value = useMemo(
+    () => ({ enabled, supported, toggle, tick, chime, thud, boing }),
+    [enabled, supported, toggle, tick, chime, thud, boing],
+  )
 
   return <SoundContext.Provider value={value}>{children}</SoundContext.Provider>
 }

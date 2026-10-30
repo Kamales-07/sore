@@ -8,6 +8,8 @@ export const SoundContext = createContext({
   toggle: noop,
   tick: noop,
   chime: noop,
+  thud: noop,
+  boing: noop,
 })
 
 export function useSound() {

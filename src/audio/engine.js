@@ -109,6 +109,30 @@ export function chime() {
   ;[523.25, 659.25, 783.99].forEach((freq, index) => tone(freq, { start: index * 0.11, duration: 0.6, volume: 0.04 }))
 }
 
+/** Low thump for a rubber stamp landing. */
+export function thud() {
+  tone(150, { duration: 0.18, volume: 0.09, type: 'triangle' })
+  tone(75, { duration: 0.26, volume: 0.08 })
+}
+
+/** Cartoon boing for the runaway button. */
+export function boing() {
+  if (!ctx) return
+  const t = ctx.currentTime
+  const osc = ctx.createOscillator()
+  const gain = ctx.createGain()
+  osc.type = 'sine'
+  osc.frequency.setValueAtTime(260, t)
+  osc.frequency.exponentialRampToValueAtTime(720, t + 0.12)
+  osc.frequency.exponentialRampToValueAtTime(380, t + 0.28)
+  gain.gain.setValueAtTime(0, t)
+  gain.gain.linearRampToValueAtTime(0.05, t + 0.02)
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.32)
+  osc.connect(gain).connect(master)
+  osc.start(t)
+  osc.stop(t + 0.36)
+}
+
 /** Pause audio while the tab is hidden; resume when visible. */
 export function setPageVisible(visible) {
   if (!ctx) return

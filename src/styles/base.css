@@ -6,25 +6,25 @@
   --sky: #60a5fa;
   --ice: #dbeafe;
   --white: #f8fafc;
-  --deep: #050d1a;
+  --ink: #0b1324;
+  --anger: #ff6b4a;
+  --anger-2: #f59e0b;
 
   --text: var(--white);
-  --text-2: rgba(219, 234, 254, 0.8);
+  --text-2: rgba(219, 234, 254, 0.82);
   --text-3: rgba(219, 234, 254, 0.6);
-  --line: rgba(96, 165, 250, 0.14);
-  --line-2: rgba(96, 165, 250, 0.3);
+  --line: rgba(96, 165, 250, 0.16);
+  --line-2: rgba(96, 165, 250, 0.32);
 
   --radius: 18px;
-  --radius-lg: 26px;
   --shadow: 0 28px 70px -36px rgba(0, 0, 0, 0.85);
   --glow: 0 0 0 1px rgba(96, 165, 250, 0.3), 0 14px 40px -14px rgba(37, 99, 235, 0.75);
 
-  --serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --display: 'Fredoka', 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
   --sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
-
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --header-h: 60px;
+  --pop: cubic-bezier(0.34, 1.56, 0.64, 1);
   color-scheme: dark;
 }
 
@@ -36,8 +36,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--header-h);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -53,10 +51,9 @@ body {
   color: var(--text);
   font-family: var(--sans);
   font-size: 16px;
-  line-height: 1.65;
+  line-height: 1.6;
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
@@ -65,53 +62,32 @@ body {
 
 h1,
 h2,
-h3,
 p,
-ul,
-ol,
-blockquote,
-figure {
+ul {
   margin: 0;
   padding: 0;
 }
 
 h1,
-h2,
-h3 {
-  font-weight: 400;
+h2 {
+  font-weight: 600;
 }
 
-ul,
-ol {
+ul {
   list-style: none;
 }
 
-img,
 svg,
 canvas {
   display: block;
   max-width: 100%;
 }
 
-button,
-input,
-textarea {
+button {
   font: inherit;
   color: inherit;
-}
-
-button {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-}
-
-a {
-  color: var(--sky);
-}
-
-::selection {
-  background: rgba(37, 99, 235, 0.55);
-  color: var(--white);
 }
 
 :focus-visible {
@@ -120,66 +96,19 @@ a {
   border-radius: 6px;
 }
 
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
 [tabindex='-1']:focus {
   outline: none;
 }
 
-/* ================= Helpers ================= */
-.container {
-  width: min(100% - 32px, 1120px);
-  margin-inline: auto;
+.app {
+  position: relative;
+  z-index: 1;
 }
 
-.mono {
-  font-family: var(--mono);
-}
-
-.muted {
-  color: var(--text-3);
-}
-
-.footnote {
-  color: var(--text-3);
-  font-size: 0.92rem;
-  line-height: 1.6;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.skip-link {
-  position: fixed;
-  left: 16px;
-  top: -80px;
-  z-index: 200;
-  padding: 10px 16px;
-  border-radius: 10px;
-  background: var(--royal);
-  color: var(--white);
-  font-weight: 600;
-  text-decoration: none;
-  transition: top 0.2s;
-}
-
-.skip-link:focus {
-  top: 12px;
-}
-
-.experience {
-  animation: fadeIn 1.1s ease both;
+.bg-particles {
+  position: fixed !important;
+  inset: 0;
+  z-index: 0;
 }
 
 /* ================= Keyframes ================= */
@@ -203,70 +132,138 @@ a {
   }
 }
 
-@keyframes slideIn {
-  from {
+@keyframes popIn {
+  0% {
     opacity: 0;
-    transform: translateX(24px);
+    scale: 0.6;
   }
-  to {
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes peekUp {
+  0% {
+    opacity: 0;
+    transform: translateY(70px);
+  }
+  100% {
     opacity: 1;
     transform: none;
-  }
-}
-
-@keyframes blurIn {
-  from {
-    opacity: 0;
-    filter: blur(14px);
-    transform: translateY(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
-}
-
-@keyframes drawLine {
-  from {
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  to {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-}
-
-@keyframes introOut {
-  to {
-    opacity: 0;
-    transform: scale(1.03);
-    filter: blur(6px);
   }
 }
 
 @keyframes breathe {
   0%,
   100% {
-    opacity: 0.75;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateY(0);
   }
   50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes hop {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(2deg);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes startle {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px) scale(1.03);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes glitch {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    filter: none;
+  }
+  20% {
+    transform: translate(-4px, 1px) skewX(-6deg);
+    filter: hue-rotate(40deg);
+  }
+  40% {
+    transform: translate(3px, -2px);
+  }
+  60% {
+    transform: translate(-2px, 2px) skewX(4deg);
+    filter: hue-rotate(-30deg);
+  }
+  80% {
+    transform: translate(2px, 0);
+  }
+}
+
+@keyframes eyeBlink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+
+@keyframes drip {
+  0% {
+    transform: translateY(0);
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.08);
+  }
+  100% {
+    transform: translateY(18px);
+    opacity: 0;
   }
 }
 
-@keyframes waveMove {
-  to {
-    transform: translateX(-50%);
+@keyframes wave {
+  0%,
+  100% {
+    transform: skewY(0deg);
+  }
+  50% {
+    transform: skewY(-6deg);
   }
 }
 
-@keyframes flow {
-  to {
-    stroke-dashoffset: -18;
+@keyframes rise {
+  0% {
+    transform: translateY(4px);
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-8px);
+    opacity: 0;
   }
 }
 
@@ -276,44 +273,38 @@ a {
   }
 }
 
+@keyframes stampSlam {
+  0% {
+    opacity: 0;
+    scale: 2.6;
+  }
+  60% {
+    opacity: 1;
+    scale: 0.92;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
 @keyframes pulse {
   0%,
   100% {
-    opacity: 0.35;
-    transform: scale(0.9);
+    box-shadow:
+      0 0 0 0 rgba(96, 165, 250, 0.55),
+      0 12px 32px -14px rgba(37, 99, 235, 0.9);
   }
   50% {
-    opacity: 0.9;
-    transform: scale(1.1);
+    box-shadow:
+      0 0 0 14px rgba(96, 165, 250, 0),
+      0 12px 32px -14px rgba(37, 99, 235, 0.9);
   }
 }
 
-@keyframes hintPulse {
-  0% {
-    opacity: 0.8;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.12);
-  }
-}
-
-@keyframes toastIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-    letter-spacing: 0.5em;
-  }
+@keyframes waveMove {
   to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
+    transform: translateX(-50%);
   }
 }
 
@@ -324,99 +315,6 @@ a {
   }
   50% {
     height: 100%;
-  }
-}
-
-@keyframes msgIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes typing {
-  0%,
-  60%,
-  100% {
-    opacity: 0.35;
-    transform: translateY(0);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(-3px);
-  }
-}
-
-@keyframes flicker {
-  50% {
-    opacity: 0.35;
-  }
-}
-
-@keyframes lineIn {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes chipIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes draw {
-  from {
-    stroke-dashoffset: 400;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes scan {
-  0% {
-    opacity: 1;
-    transform: translateY(-100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(260%);
-  }
-}
-
-@keyframes gradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes drift {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  33% {
-    transform: translate(min(62vw, 720px), 90px);
-  }
-  66% {
-    transform: translate(min(28vw, 320px), 460px);
   }
 }
 
@@ -431,23 +329,8 @@ a {
   }
 }
 
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* ================= Reduced motion ================= */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
   *,
   *::before,
   *::after {
